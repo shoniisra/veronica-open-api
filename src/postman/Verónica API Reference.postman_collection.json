@@ -1300,7 +1300,7 @@
 							"raw": "{\r\n\t\"numeroIdentificacion\": \"\",\r\n\t\"razonSocial\": \"\",\r\n\t\"tipoIdentificacion\": \"\",\r\n\t\"logo\": \"\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/veronica/operaciones/empresas",
+							"raw": "http://localhost:8080/veronica/operaciones/empresa",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1309,7 +1309,7 @@
 							"path": [
 								"veronica",
 								"operaciones",
-								"empresas"
+								"empresa"
 							]
 						}
 					},

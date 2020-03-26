@@ -102,7 +102,7 @@ Al instalar la base de datos de `Veronica`, automáticamente se crearán dos usu
 ### Obtención de tokens OAuth2.0
 Para generar un token para el usuario admin, por ejemplo, podermos ejecutar el siguiente comando curl:
 ```bash
-curl -u veronica:veronica -X POST http://localhost:8080/oauth/token -H "Accept:application/json" -d "username=admin&password=veronica&grant_type=password"
+curl -u veronica:veronica -X POST http://localhost:8080/veronica/oauth/token -H "Accept:application/json" -d "username=admin&password=veronica&grant_type=password"
 ```
 También en el archivo **/veronica/Verónica API Reference.postman_collection.json** de postman podemos encontrar un ejemplo de llamada a este endpoint.
 

@@ -474,7 +474,6 @@ ALTER SEQUENCE public.receipt_type_receipt_type_id_seq OWNED BY public.receipt_t
 CREATE TABLE public.supplier (
     supplier_id integer NOT NULL,
     id_number character varying(20) NOT NULL,
-    id_type character varying(10) NOT NULL,
     business_name character varying(300) NOT NULL,
     logo bytea,
     is_deleted boolean DEFAULT false

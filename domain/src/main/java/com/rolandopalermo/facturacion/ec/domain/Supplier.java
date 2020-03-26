@@ -27,9 +27,6 @@ public class Supplier {
     private String idNumber;
 
     @Column
-    private String idType;
-
-    @Column
     private String businessName;
 
     @Column

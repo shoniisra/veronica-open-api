@@ -1,6 +1,7 @@
 target/
 .project
 .classpath
+.code-workspace
 .settings/
 .svn/
 bin/
@@ -16,3 +17,14 @@ out/
 /.metadata/
 #IReport
 *.jasper
+app/.factorypath
+domain/.factorypath
+ride/.factorypath
+service/.factorypath
+persistence/.factorypath
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
