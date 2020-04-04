@@ -6,11 +6,13 @@ import com.rolandopalermo.facturacion.ec.jaxb.impl.v1_0.CreditMemoJaxbServiceImp
 import com.rolandopalermo.facturacion.ec.jaxb.impl.v1_0.DebitMemoJaxbServiceImpl;
 import com.rolandopalermo.facturacion.ec.jaxb.impl.v1_0.InvoiceJaxbServiceImpl;
 import com.rolandopalermo.facturacion.ec.jaxb.impl.v1_0.WithHoldingJaxbServiceImpl;
+import com.rolandopalermo.facturacion.ec.jaxb.impl.v1_0.PurchaseClearanceJaxbServiceImpl;
 import com.rolandopalermo.facturacion.ec.modelo.factura.Factura;
 import com.rolandopalermo.facturacion.ec.modelo.guia.GuiaRemision;
 import com.rolandopalermo.facturacion.ec.modelo.notacredito.NotaCredito;
 import com.rolandopalermo.facturacion.ec.modelo.notadebito.NotaDebito;
 import com.rolandopalermo.facturacion.ec.modelo.retencion.ComprobanteRetencion;
+import com.rolandopalermo.facturacion.ec.modelo.liquidacion.LiquidacionCompra;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,6 +37,11 @@ public class JaxbConfig {
     @Bean
     public JaxbService<Factura> getInvoiceMarshaller() {
         return new InvoiceJaxbServiceImpl();
+    }
+
+    @Bean
+    public JaxbService<LiquidacionCompra> getPCMarshaller() {
+        return new PurchaseClearanceJaxbServiceImpl();
     }
 
     @Bean

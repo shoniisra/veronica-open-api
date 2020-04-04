@@ -25,6 +25,7 @@ public class Constants {
     public static final String URI_API_V1_CM = URI_API_V1 + "notas-credito";
     public static final String URI_API_V1_DM = URI_API_V1 + "notas-debito";
     public static final String URI_API_V1_WH = URI_API_V1 + "retenciones";
+    public static final String URI_API_V1_PC = URI_API_V1 + "liquidaciones-compra";
     public static final String URI_OPERATIONS = "/operaciones/";
     public static final String URI_PUBLIC = "/publico/";
 
