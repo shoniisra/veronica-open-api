@@ -34,7 +34,8 @@ public class GenericSRIController<DTO extends ComprobanteDTO, MODEL extends Comp
             @ApiResponse(code = 201, message = "Creada"),
             @ApiResponse(code = 401, message = "No estas autorizado"),
             @ApiResponse(code = 403, message = "Acción No permitida"),
-            @ApiResponse(code = 404, message = "Acción No encontrada")
+            @ApiResponse(code = 404, message = "Acción No encontrada"),
+            @ApiResponse(code = 500, message = "Internal server error")
     })
     public ResponseEntity<Object> create(@Valid @RequestBody DTO dto) {
         return new ResponseEntity<>(new VeronicaResponseDTO<>(true, service.create(dto)), HttpStatus.CREATED);

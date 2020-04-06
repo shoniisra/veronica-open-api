@@ -2,6 +2,8 @@ package com.rolandopalermo.facturacion.ec.app.config;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import com.google.common.net.HttpHeaders;
+import lombok.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -11,12 +13,16 @@ import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 @EnableSwagger2
 @Configuration
@@ -26,6 +32,14 @@ public class SwaggerConfig {
     private final String AUTH_SERVER="http://localhost:8080/veronica/oauth/";
     private final String CLIENT_ID="veronica";
     private final String CLIENT_SECRET="veronica";
+
+
+
+    private String accessTokenUri="http://localhost:8080/veronica/oauth/token";
+    public static final String securitySchemaOAuth2 = "oauth2schema";
+    public static final String authorizationScopeGlobal = "global";
+    public static final String authorizationScopeGlobalDesc ="accessEverything";
+
     private AuthorizationScope[] scopes() {
         AuthorizationScope[] scopes = {
                 new AuthorizationScope("read", "for read operations"),
@@ -34,7 +48,7 @@ public class SwaggerConfig {
         return scopes;
     }
     private ApiInfo apiInfo() {
-        Contact contact = new Contact("ISRA.DEV", "www.isra.dev", "israteneda@gmail.com");
+        Contact contact = new Contact("ISRA.DEV", "https://www.isra.dev/", "israteneda@gmail.com");
         return new ApiInfoBuilder()
                 .title("Facturación Ecuador - API REST")
                 .description("Api Rest que gestiona el envio y autorización de documentos electrónicos al Servicio de Rentas Internas SRI")
@@ -54,22 +68,59 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo())
-                .securitySchemes(Lists.newArrayList(securityScheme()))
-                .securityContexts(Lists.newArrayList(securityContext()));
+                .securitySchemes(newArrayList(securitySchema(), apiKey(), apiCookieKey()))
+                .securityContexts(newArrayList(securityContext()));
     }
 
     @Bean
-    public Docket authenticationApi() {
-        final Predicate<String> OAUTH_API = PathSelectors.ant("/oauth/**");
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("OAuth 2.0 API")
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(OAUTH_API)
+    public SecurityScheme apiKey() {
+        return new ApiKey(HttpHeaders.AUTHORIZATION, "apiKey", "header");
+    }
+
+    @Bean
+    public SecurityScheme apiCookieKey() {
+        return new ApiKey(HttpHeaders.COOKIE, "apiKey", "cookie");
+    }
+
+    private OAuth securitySchema() {
+
+        List<AuthorizationScope> authorizationScopeList = newArrayList();
+        authorizationScopeList.add(new AuthorizationScope("read", "read all"));
+        authorizationScopeList.add(new AuthorizationScope("write", "access all"));
+
+        List<GrantType> grantTypes = newArrayList();
+        GrantType passwordCredentialsGrant = new ResourceOwnerPasswordCredentialsGrant(accessTokenUri);
+        grantTypes.add(passwordCredentialsGrant);
+
+        return new OAuth("oauth2", authorizationScopeList, grantTypes);
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder().securityReferences(defaultAuth())
                 .build();
     }
 
+
+
+    private List<SecurityReference> defaultAuth() {
+
+        final AuthorizationScope[] authorizationScopes = new AuthorizationScope[3];
+        authorizationScopes[0] = new AuthorizationScope("read", "read all");
+        authorizationScopes[1] = new AuthorizationScope("trust", "trust all");
+        authorizationScopes[2] = new AuthorizationScope("write", "write all");
+
+        return Collections.singletonList(new SecurityReference("oauth2", authorizationScopes));
+    }
+
     @Bean
+    public SecurityConfiguration security() {
+        return new SecurityConfiguration
+                ("username", "password", "", "", "Bearer access token", ApiKeyVehicle.HEADER, HttpHeaders.AUTHORIZATION,"");
+    }
+
+
+
+   /* @Bean
     public SecurityConfiguration security() {
         return SecurityConfigurationBuilder.builder()
                 .clientId(CLIENT_ID)
@@ -100,7 +151,7 @@ public class SwaggerConfig {
                 .forPaths(PathSelectors.regex("/foos.*"))
                 .build();
     }
-
+*/
   /*
     @Bean
     public Docket v1APIConfiguration() {
