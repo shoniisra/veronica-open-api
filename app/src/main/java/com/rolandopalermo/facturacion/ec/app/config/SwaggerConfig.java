@@ -1,5 +1,7 @@
 package com.rolandopalermo.facturacion.ec.app.config;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -21,9 +23,9 @@ import java.util.Collections;
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig {
 
-    private String AUTH_SERVER="http://localhost:8080/veronica/oauth/";
-    private String CLIENT_ID="veronica";
-    private String CLIENT_SECRET="veronica";
+    private final String AUTH_SERVER="http://localhost:8080/veronica/oauth/";
+    private final String CLIENT_ID="veronica";
+    private final String CLIENT_SECRET="veronica";
     private AuthorizationScope[] scopes() {
         AuthorizationScope[] scopes = {
                 new AuthorizationScope("read", "for read operations"),
@@ -32,25 +34,39 @@ public class SwaggerConfig {
         return scopes;
     }
     private ApiInfo apiInfo() {
-        return new ApiInfo(
-                "Facturación Ecuador - API REST",
-                "Api Rest que gestiona el envio y autorización de documentos electrónicos al Servicio de Rentas Internas SRI",
-                "1.0",
-                "Términos y Servicios",
-                new Contact("ISRA.DEV", "www.isra.dev", "israteneda@gmail.com"),
-                "Licencia de Uso de API REST", "https://github.com/shoniisra/veronica-open-api", Collections.emptyList());
+        Contact contact = new Contact("ISRA.DEV", "www.isra.dev", "israteneda@gmail.com");
+        return new ApiInfoBuilder()
+                .title("Facturación Ecuador - API REST")
+                .description("Api Rest que gestiona el envio y autorización de documentos electrónicos al Servicio de Rentas Internas SRI")
+                .version("1.0")
+                .license("Apache 2.0")
+                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0")
+                .contact(contact)
+                .build();
     }
 
     @Bean
     public Docket v1APIConfiguration() {
+        String BASE_PACKAGE = "com.rolandopalermo.facturacion.ec.app.api";
         return new Docket(
                 DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors.basePackage("com.rolandopalermo.facturacion.ec.app.api"))
+                .apis(RequestHandlerSelectors.basePackage(BASE_PACKAGE))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo())
-                .securitySchemes(Arrays.asList(securityScheme()))
-                .securityContexts(Arrays.asList(securityContext()));
+                .securitySchemes(Lists.newArrayList(securityScheme()))
+                .securityContexts(Lists.newArrayList(securityContext()));
+    }
+
+    @Bean
+    public Docket authenticationApi() {
+        final Predicate<String> OAUTH_API = PathSelectors.ant("/oauth/**");
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("OAuth 2.0 API")
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(OAUTH_API)
+                .build();
     }
 
     @Bean
