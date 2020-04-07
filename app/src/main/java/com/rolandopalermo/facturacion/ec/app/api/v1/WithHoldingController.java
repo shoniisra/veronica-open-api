@@ -19,7 +19,7 @@ import static com.rolandopalermo.facturacion.ec.common.Constants.API_DOC_ANEXO_1
 
 @RestController
 @RequestMapping(value = {URI_API_V1_WH})
-@Api(value="Retenciones",description = "Gestiona el ciclo de vida de una retención")
+@Api(tags="Retenciones",value="Retenciones",description = "Gestiona el ciclo de vida de una retención")
 public class WithHoldingController extends GenericSRIController<ComprobanteRetencionDTO, ComprobanteRetencion, Withholding> {
 
     @ApiOperation(value = "Crea un comprobante de retención y lo almacena en base de datos")
