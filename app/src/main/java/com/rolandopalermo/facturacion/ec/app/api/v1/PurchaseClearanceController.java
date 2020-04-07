@@ -19,7 +19,7 @@ import static com.rolandopalermo.facturacion.ec.common.Constants.API_DOC_ANEXO_1
 
 @RestController
 @RequestMapping(value = {URI_API_V1_PC})
-@Api(description = "Gestiona el ciclo de vida de una Liquidación de Compra")
+@Api(value="Liquidaciones de Compra",description = "Gestiona el ciclo de vida de una Liquidación de Compra")
 public class PurchaseClearanceController extends GenericSRIController<LiquidacionCompraDTO, LiquidacionCompra, PurchaseClearance> {
 
     @ApiOperation(value = "Crea una Liquidación de Compra electrónica y la almacena en base de datos")

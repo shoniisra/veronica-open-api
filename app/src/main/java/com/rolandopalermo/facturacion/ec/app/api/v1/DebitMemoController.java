@@ -19,7 +19,7 @@ import static com.rolandopalermo.facturacion.ec.common.Constants.API_DOC_ANEXO_1
 
 @RestController
 @RequestMapping(value = {URI_API_V1_DM})
-@Api(description = "Gestiona el ciclo de vida de una nota de débito electrónica")
+@Api(value="Notas de Débito",description = "Gestiona el ciclo de vida de una nota de débito electrónica")
 public class DebitMemoController extends GenericSRIController<NotaDebitoDTO, NotaDebito, DebitMemo> {
 
     @ApiOperation(value = "Crea una nota de débito electrónica y la almacena en base de datos")
