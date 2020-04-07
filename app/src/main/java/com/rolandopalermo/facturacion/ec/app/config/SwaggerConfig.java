@@ -1,52 +1,30 @@
 package com.rolandopalermo.facturacion.ec.app.config;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
 import com.google.common.net.HttpHeaders;
-import lombok.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
-import springfox.documentation.builders.*;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger.web.SecurityConfiguration;
-import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import static com.google.common.collect.Lists.newArrayList;
+import static com.rolandopalermo.facturacion.ec.app.common.Constants.URI_ACCESS_TOKEN;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
 
 @EnableSwagger2
 @Configuration
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig {
 
-    private final String AUTH_SERVER="http://localhost:8080/veronica/oauth/";
-    private final String CLIENT_ID="veronica";
-    private final String CLIENT_SECRET="veronica";
-
-
-
-    private String accessTokenUri="http://localhost:8080/veronica/oauth/token";
-    public static final String securitySchemaOAuth2 = "oauth2schema";
-    public static final String authorizationScopeGlobal = "global";
-    public static final String authorizationScopeGlobalDesc ="accessEverything";
-
-    private AuthorizationScope[] scopes() {
-        AuthorizationScope[] scopes = {
-                new AuthorizationScope("read", "for read operations"),
-                new AuthorizationScope("write", "for write operations"),
-                new AuthorizationScope("foo", "Access foo API") };
-        return scopes;
-    }
     private ApiInfo apiInfo() {
         Contact contact = new Contact("ISRA.DEV", "https://www.isra.dev/", "israteneda@gmail.com");
         return new ApiInfoBuilder()
@@ -74,22 +52,21 @@ public class SwaggerConfig {
 
     @Bean
     public SecurityScheme apiKey() {
-        return new ApiKey(HttpHeaders.AUTHORIZATION, "apiKey", "header");
+        return new ApiKey(HttpHeaders.AUTHORIZATION, "access_token", "header");
     }
 
     @Bean
     public SecurityScheme apiCookieKey() {
-        return new ApiKey(HttpHeaders.COOKIE, "apiKey", "cookie");
+        return new ApiKey(HttpHeaders.COOKIE, "refresh_token", "cookie");
     }
 
     private OAuth securitySchema() {
-
         List<AuthorizationScope> authorizationScopeList = newArrayList();
         authorizationScopeList.add(new AuthorizationScope("read", "read all"));
         authorizationScopeList.add(new AuthorizationScope("write", "access all"));
 
         List<GrantType> grantTypes = newArrayList();
-        GrantType passwordCredentialsGrant = new ResourceOwnerPasswordCredentialsGrant(accessTokenUri);
+        GrantType passwordCredentialsGrant = new ResourceOwnerPasswordCredentialsGrant(URI_ACCESS_TOKEN);
         grantTypes.add(passwordCredentialsGrant);
 
         return new OAuth("oauth2", authorizationScopeList, grantTypes);
@@ -99,8 +76,6 @@ public class SwaggerConfig {
         return SecurityContext.builder().securityReferences(defaultAuth())
                 .build();
     }
-
-
 
     private List<SecurityReference> defaultAuth() {
 
@@ -117,69 +92,5 @@ public class SwaggerConfig {
         return new SecurityConfiguration
                 ("username", "password", "", "", "Bearer access token", ApiKeyVehicle.HEADER, HttpHeaders.AUTHORIZATION,"");
     }
-
-
-
-   /* @Bean
-    public SecurityConfiguration security() {
-        return SecurityConfigurationBuilder.builder()
-                .clientId(CLIENT_ID)
-                .clientSecret(CLIENT_SECRET)
-                .scopeSeparator(" ")
-                .useBasicAuthenticationWithAccessCodeGrant(true)
-                .build();
-    }
-
-    private SecurityScheme securityScheme() {
-        GrantType grantType = new AuthorizationCodeGrantBuilder()
-                .tokenEndpoint(new TokenEndpoint(AUTH_SERVER + "/token", "oauthtoken"))
-                .tokenRequestEndpoint(
-                        new TokenRequestEndpoint(AUTH_SERVER + "/authorize", CLIENT_ID, CLIENT_SECRET))
-                .build();
-
-        SecurityScheme oauth = new OAuthBuilder().name("spring_oauth")
-                .grantTypes(Arrays.asList(grantType))
-                .scopes(Arrays.asList(scopes()))
-                .build();
-        return oauth;
-    }
-
-    private SecurityContext securityContext() {
-        return SecurityContext.builder()
-                .securityReferences(
-                        Arrays.asList(new SecurityReference("spring_oauth", scopes())))
-                .forPaths(PathSelectors.regex("/foos.*"))
-                .build();
-    }
-*/
-  /*
-    @Bean
-    public Docket v1APIConfiguration() {
-        return new Docket(
-
-                DocumentationType.SWAGGER_2).groupName("api_v1.0").select()
-                .apis(RequestHandlerSelectors.basePackage("com.rolandopalermo.facturacion.ec.app.api.v1"))
-                .paths(PathSelectors.regex("/api/v1.*"))
-                .build()
-                .apiInfo(new ApiInfoBuilder().version("1.0")
-                        .title("API 1.0")
-                        .description("Documentation Veronica API")
-                        .build());
-}
-  */
-  /*
-    @Bean
-    public Docket v1OperationConfiguration() {
-        return new Docket(
-                DocumentationType.SWAGGER_2).groupName("operaciones").select()
-                .apis(RequestHandlerSelectors.basePackage("com.rolandopalermo.facturacion.ec.app.api"))
-                .paths(PathSelectors.regex("/operaciones.*"))
-                .build()
-                .apiInfo(new ApiInfoBuilder().version("1.0")
-                        .title("Operaciones")
-                        .description("Documentation Veronica API")
-                        .build());
-    }
-   */
 
 }

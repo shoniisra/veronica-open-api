@@ -29,4 +29,6 @@ public class Constants {
     public static final String URI_OPERATIONS = "/operaciones/";
     public static final String URI_PUBLIC = "/publico/";
 
+    public static final String URI_ACCESS_TOKEN="http://localhost:8080/veronica/oauth/token";
+
 }
