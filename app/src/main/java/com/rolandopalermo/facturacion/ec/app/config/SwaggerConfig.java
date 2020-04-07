@@ -40,8 +40,8 @@ public class SwaggerConfig {
     @Bean
     public Docket v1APIConfiguration() {
         String BASE_PACKAGE = "com.rolandopalermo.facturacion.ec.app.api";
-        return new Docket(
-                DocumentationType.SWAGGER_2).select()
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
                 .apis(RequestHandlerSelectors.basePackage(BASE_PACKAGE))
                 .paths(PathSelectors.any())
                 .build()
