@@ -19,7 +19,7 @@ import static com.rolandopalermo.facturacion.ec.common.Constants.API_DOC_ANEXO_1
 
 @RestController
 @RequestMapping(value = {URI_API_V1_BOL})
-@Api(description = "Gestiona el ciclo de vida de una guía de remisión electrónica")
+@Api(tags = "Guías de Remisión",value="Guías de Remisión",description = "Gestiona el ciclo de vida de una guía de remisión electrónica")
 public class BolController extends GenericSRIController<GuiaRemisionDTO, GuiaRemision, Bol> {
 
     @ApiOperation(value = "Crea una guía de remisión electrónica y la almacena en base de datos")

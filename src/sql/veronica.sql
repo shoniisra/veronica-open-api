@@ -362,6 +362,64 @@ CREATE SEQUENCE public.invoice_seq
 ALTER TABLE public.invoice_seq OWNER TO postgres;
 
 --
+-- Name: purchase_clearance; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.purchase_clearance (
+    purchase_clearance_id integer NOT NULL,
+    access_key character varying(50) NOT NULL,
+    sri_version character varying(5) NOT NULL,
+    xml_content xml,
+    supplier_id character varying(20) NOT NULL,
+    customer_id character varying(20) NOT NULL,
+    issue_date date,
+    internal_status_id integer,
+    purchase_clearance_number character varying(20),
+    xml_authorization xml,
+    is_deleted boolean DEFAULT false,
+    authorization_date timestamp without time zone
+);
+
+
+ALTER TABLE public.purchase_clearance OWNER TO postgres;
+
+--
+-- Name: purchase_clearance_purchase_clearance_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.purchase_clearance_purchase_clearance_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.purchase_clearance_purchase_clearance_id_seq OWNER TO postgres;
+
+--
+-- Name: purchase_clearance_purchase_clearance_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.purchase_clearance_purchase_clearance_id_seq OWNED BY public.purchase_clearance.purchase_clearance_id;
+
+
+--
+-- Name: purchase_clearance_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.purchase_clearance_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.purchase_clearance_seq OWNER TO postgres;
+
+--
 -- Name: user; Type: TABLE; Schema: public; Owner: postgres
 --
 

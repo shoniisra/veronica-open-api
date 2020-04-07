@@ -19,7 +19,7 @@ import static com.rolandopalermo.facturacion.ec.common.Constants.API_DOC_ANEXO_1
 
 @RestController
 @RequestMapping(value = {URI_API_V1_INVOICE})
-@Api(description = "Gestiona el ciclo de vida de una factura electrónica")
+@Api(tags="Facturas", value="Facturas",description = "Gestiona el ciclo de vida de una factura electrónica")
 public class InvoiceController extends GenericSRIController<FacturaDTO, Factura, Invoice> {
 
     @ApiOperation(value = "Crea una factura electrónica y la almacena en base de datos")

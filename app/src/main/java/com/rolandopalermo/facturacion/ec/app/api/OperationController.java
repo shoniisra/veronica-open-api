@@ -42,7 +42,7 @@ import static com.rolandopalermo.facturacion.ec.common.Constants.SWAGGER_EMISOR;
 
 @RestController
 @RequestMapping(value = {URI_OPERATIONS})
-@Api(description = "Realiza operaciones generales sobre Verónica")
+@Api(tags="Operaciones",value="Operaciones",description = "Realiza operaciones generales sobre Verónica")
 public class OperationController {
 
     @Autowired

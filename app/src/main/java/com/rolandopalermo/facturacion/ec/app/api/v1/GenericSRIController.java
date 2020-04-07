@@ -5,6 +5,8 @@ import com.rolandopalermo.facturacion.ec.dto.VeronicaResponseDTO;
 import com.rolandopalermo.facturacion.ec.dto.v1.ComprobanteDTO;
 import com.rolandopalermo.facturacion.ec.modelo.Comprobante;
 import com.rolandopalermo.facturacion.ec.service.sri.GenericSRIService;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +29,14 @@ public class GenericSRIController<DTO extends ComprobanteDTO, MODEL extends Comp
     private GenericSRIService<DTO, MODEL, DOMAIN> service;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Llamada exitosa"),
+            @ApiResponse(code = 201, message = "Creada"),
+            @ApiResponse(code = 401, message = "No estas autorizado"),
+            @ApiResponse(code = 403, message = "Acción No permitida"),
+            @ApiResponse(code = 404, message = "Acción No encontrada"),
+            @ApiResponse(code = 500, message = "Internal server error")
+    })
     public ResponseEntity<Object> create(@Valid @RequestBody DTO dto) {
         return new ResponseEntity<>(new VeronicaResponseDTO<>(true, service.create(dto)), HttpStatus.CREATED);
     }

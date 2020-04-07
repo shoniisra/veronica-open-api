@@ -19,7 +19,7 @@ import static com.rolandopalermo.facturacion.ec.common.Constants.API_DOC_ANEXO_1
 
 @RestController
 @RequestMapping(value = {URI_API_V1_CM})
-@Api(description = "Gestiona el ciclo de vida de una nota de crédito electrónica")
+@Api(tags="Notas de Crédito", value="Notas de Crédito",description = "Gestiona el ciclo de vida de una nota de crédito electrónica")
 public class CreditMemoController extends GenericSRIController<NotaCreditoDTO, NotaCredito, CreditMemo> {
 
     @ApiOperation(value = "Crea una nota de crédito electrónica y la almacena en base de datos")
